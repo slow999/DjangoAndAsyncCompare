@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  nginx:
+    image: mysite_sync_nginx
+    restart: always
+    volumes:
+      - uwsgi_data:/tmp/uwsgi/
+    ports:
+      - "8000:80"
+    depends_on:
+      - web
+  web:
+    image: mysite_sync_web
+    restart: always
+    volumes:
+      - uwsgi_data:/tmp/uwsgi/
+
+volumes:
+  uwsgi_data:
