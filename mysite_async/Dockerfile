@@ -13,4 +13,4 @@ COPY mysite_async/ mysite_async/
 COPY manage.py manage.py
 COPY gunicorn.web.conf.py gunicorn.web.conf.py
 
-CMD ["gunicorn", "--config=gunicorn.web.conf.py"]
+CMD ["python", "-m", "gunicorn", "--config=gunicorn.web.conf.py"]
