@@ -1,19 +1,16 @@
-import asyncio
+from asgiref.sync import sync_to_async
+from polls.models import Foo
 from django.http import HttpResponse
+import asyncio
 
 
-async def find_prime(start, stop):
-    prime_list = []
-    for val in range(start, stop):
-        if val > 1:
-            for i in range(2, int(val/2) + 1):
-                if val % i == 0:
-                    break
-            else:
-                prime_list.append(val)
-    return prime_list
+def _find_count(value):
+    return Foo.objects.filter(a__regex=value).count()
 
+find_count = sync_to_async(_find_count, thread_sensitive=True)
 
 async def index(request):
-    prime_numbers = await find_prime(1, 50000)
-    return HttpResponse(len(prime_numbers))
+    # count1 = await find_count(r'60')
+    # count2 = await find_count(r'50')
+    await asyncio.sleep(2)
+    return HttpResponse('Hello')

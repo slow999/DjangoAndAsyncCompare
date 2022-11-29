@@ -40,11 +40,11 @@ test: test-sync test-async
 
 test-sync:
 	$(printTarget)
-	ab -n 20 -c 20 http://127.0.0.1:8000/polls/
+	ab -n 5 -c 5 http://127.0.0.1:8000/polls/
 
 test-async:
 	$(printTarget)
-	ab -n 20 -c 20 http://127.0.0.1:8888/polls/
+	ab -n 5 -c 5 http://127.0.0.1:8888/polls/
 
 clean:
 	$(printTarget)

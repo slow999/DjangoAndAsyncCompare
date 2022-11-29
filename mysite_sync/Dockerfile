@@ -13,6 +13,7 @@ COPY polls/ polls/
 COPY mysite_sync/ mysite_sync/
 COPY manage.py manage.py
 COPY mysite.uwsgi.ini mysite.uwsgi.ini
+COPY db.sqlite3 db.sqlite3
 
 
 CMD ["uwsgi", "--ini", "/code/mysite.uwsgi.ini"]
