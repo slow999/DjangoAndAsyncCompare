@@ -1,6 +1,7 @@
 BASEDIR = .
 PROJ_S = $(BASEDIR)/mysite_sync
 PROJ_A = $(BASEDIR)/mysite_async
+POSTGRESDIR = $(BASEDIR)/postgres
 
 default: build run test
 
@@ -16,7 +17,10 @@ build-async:
 	docker build -f $(PROJ_A)/Dockerfile -t mysite_async_web $(PROJ_A)/
 	docker build -f $(PROJ_A)/nginx/Dockerfile -t mysite_async_nginx $(PROJ_A)/nginx
 
-run: run-sync run-async
+run: run-sync run-async run-postgres
+
+run-postgres:
+	cd $(POSTGRESDIR) && docker compose up -d
 
 run-sync:
 	$(printTarget)
@@ -36,6 +40,12 @@ stop-async:
 	$(printTarget)
 	cd $(PROJ_A) && docker compose down
 
+stop-postgres:
+	cd $(POSTGRESDIR) && docker compose down
+
+prepare-postgres:
+	cd $(POSTGRESDIR) && ./populate.sh
+
 test: test-sync test-async
 
 test-sync:
@@ -49,6 +59,9 @@ test-async:
 clean:
 	$(printTarget)
 	rm -rf venv
+
+clean-postgres:
+	cd $(POSTGRESDIR) && ./clean.sh
 
 define printTarget
 	@printf "\033[32m$(@)\n\033[0m"
