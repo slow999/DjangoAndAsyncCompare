@@ -4,5 +4,8 @@ from django.db import models
 
 
 class Foo(models.Model):
-    a = models.CharField(max_length=200)
+    id = models.IntegerField(primary_key=True)
+
+    class Meta:
+        managed = False
     
