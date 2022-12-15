@@ -50,24 +50,30 @@ test: test-sync test-async
 
 test-sync:
 	$(printTarget)
-	ab -n 5 -c 5 http://127.0.0.1:8000/polls/
+	ab -n 500 -c 500 http://127.0.0.1:8000/polls/
 
 test-async:
 	$(printTarget)
-	ab -n 5 -c 5 http://127.0.0.1:8888/polls/
+	ab -n 500 -c 500 http://127.0.0.1:8888/polls/
 
-clean: clean-postgres
+clean:
 	$(printTarget)
 	rm -rf venv
 
 clean-postgres:
+	$(printTarget)
 	cd $(POSTGRESDIR) && ./clean.sh
 
 network:
+	$(printTarget)
 	docker network create my-network
 
 clean-network:
+	$(printTarget)
 	docker network rm my-network
+
+clean-all: clean clean-postgres clean-network
+
 
 define printTarget
 	@printf "\033[32m$(@)\n\033[0m"
