@@ -6,4 +6,10 @@ services:
     environment:
       POSTGRES_PASSWORD: mysecretpassword
     ports:
-      - 5439:5432
+      - 8001:5432
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    external: true

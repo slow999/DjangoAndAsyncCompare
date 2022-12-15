@@ -9,12 +9,21 @@ services:
     restart: always
     depends_on:
       - web
+    networks:
+      - default
 
   web:
     image: mysite_async_web
     volumes:
       - socket_data:/tmp/gunicorn/
     restart: always
+    networks:
+      - default
+      - my-network
 
 volumes:
   socket_data:
+
+networks:
+  my-network:
+    external: true

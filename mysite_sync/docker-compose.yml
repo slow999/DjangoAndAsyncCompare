@@ -9,11 +9,21 @@ services:
       - "8000:80"
     depends_on:
       - web
+    networks:
+      - default
+
   web:
     image: mysite_sync_web
     restart: always
     volumes:
       - uwsgi_data:/tmp/uwsgi/
+    networks:
+      - default
+      - my-network
 
 volumes:
   uwsgi_data:
+
+networks:
+  my-network:
+    external: true

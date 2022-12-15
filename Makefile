@@ -3,7 +3,7 @@ PROJ_S = $(BASEDIR)/mysite_sync
 PROJ_A = $(BASEDIR)/mysite_async
 POSTGRESDIR = $(BASEDIR)/postgres
 
-default: build run test
+default: build start test
 
 build: build-sync build-async
 
@@ -17,20 +17,20 @@ build-async:
 	docker build -f $(PROJ_A)/Dockerfile -t mysite_async_web $(PROJ_A)/
 	docker build -f $(PROJ_A)/nginx/Dockerfile -t mysite_async_nginx $(PROJ_A)/nginx
 
-run: run-sync run-async run-postgres
+start: start-sync start-async start-postgres
 
-run-postgres:
+start-postgres:
 	cd $(POSTGRESDIR) && docker compose up -d
 
-run-sync:
+start-sync:
 	$(printTarget)
 	cd $(PROJ_S) && docker compose up -d
 
-run-async:
+start-async:
 	$(printTarget)
 	cd $(PROJ_A) && docker compose up -d
 
-stop: stop-sync stop-async
+stop: stop-sync stop-async stop-postgres
 
 stop-sync:
 	$(printTarget)
@@ -56,12 +56,18 @@ test-async:
 	$(printTarget)
 	ab -n 5 -c 5 http://127.0.0.1:8888/polls/
 
-clean:
+clean: clean-postgres
 	$(printTarget)
 	rm -rf venv
 
 clean-postgres:
 	cd $(POSTGRESDIR) && ./clean.sh
+
+network:
+	docker network create my-network
+
+clean-network:
+	docker network rm my-network
 
 define printTarget
 	@printf "\033[32m$(@)\n\033[0m"
