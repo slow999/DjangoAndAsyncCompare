@@ -66,7 +66,7 @@ clean-postgres:
 
 network:
 	$(printTarget)
-	docker network create my-network
+	-docker network create my-network
 
 clean-network:
 	$(printTarget)
