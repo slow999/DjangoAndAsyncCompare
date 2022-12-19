@@ -17,7 +17,7 @@ build-async:
 	docker build -f $(PROJ_A)/Dockerfile -t mysite_async_web $(PROJ_A)/
 	docker build -f $(PROJ_A)/nginx/Dockerfile -t mysite_async_nginx $(PROJ_A)/nginx
 
-start: start-sync start-async start-postgres
+start: network start-sync start-async start-postgres
 
 start-postgres:
 	cd $(POSTGRESDIR) && docker compose up -d
@@ -50,11 +50,11 @@ test: test-sync test-async
 
 test-sync:
 	$(printTarget)
-	ab -n 500 -c 500 http://127.0.0.1:8000/polls/
+	ab -n 300 -c 300 http://127.0.0.1:8000/polls/
 
 test-async:
 	$(printTarget)
-	ab -n 500 -c 500 http://127.0.0.1:8888/polls/
+	ab -n 300 -c 300 http://127.0.0.1:8888/polls/
 
 clean:
 	$(printTarget)
